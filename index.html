@@ -4,7 +4,129 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Slot Machine Randomizer</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* CSS START */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: radial-gradient(circle, #2b2b2b, #0d0d0d);
+      color: #fff;
+    }
+
+    .slot-machine-container {
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #ffd700; /* Gold color for casino effect */
+      text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.8);
+    }
+
+    .slot-machine {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      margin: auto;
+      background: #444;
+      border: 5px solid #ffd700;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .slots {
+      display: flex;
+      gap: 10px;
+    }
+
+    .slot {
+      width: 80px;
+      height: 150px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .reel {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      animation: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+    }
+
+    .lever-container {
+      position: absolute;
+      right: -50px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lever {
+      width: 20px;
+      height: 80px;
+      background: linear-gradient(to bottom, #aaa, #777);
+      border: 2px solid #444;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+
+    .lever:after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 30px;
+      background: #ff6347; /* Tomato color */
+      border: 2px solid #444;
+      border-radius: 50%;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #fff;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #ff6a7b, #ff699a);
+    }
+
+    @keyframes spin {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-600%); }
+    }
+    /* CSS END */
+  </style>
 </head>
 <body>
   <div class="slot-machine-container">
@@ -24,6 +146,56 @@
     <button id="spinButton">Spin Again</button>
     <audio id="spinSound" src="spin.mp3"></audio>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    // JavaScript START
+    let categories = ["Food", "Sports", "Music", "Movies", "Travel", "Games", "Books", "Art", "Tech"];
+    const spinButton = document.getElementById("spinButton");
+    const spinSound = document.getElementById("spinSound");
+    const lever = document.getElementById("lever");
+
+    function getRandomCategories() {
+      const randomCategories = [];
+      for (let i = 0; i < 6; i++) {
+        randomCategories.push(categories[Math.floor(Math.random() * categories.length)]);
+      }
+      return randomCategories;
+    }
+
+    function spinSlot(slot) {
+      const reel = slot.querySelector(".reel");
+      const randomCategories = getRandomCategories();
+      reel.innerHTML = randomCategories.map(cat => `<div>${cat}</div>`).join("");
+      reel.style.animation = "none";
+      setTimeout(() => {
+        reel.style.animation = "spin 1.5s ease-out forwards";
+      }, 50);
+
+      // Ensure the final category stops correctly
+      setTimeout(() => {
+        const finalCategory = randomCategories[randomCategories.length - 1];
+        reel.innerHTML = `<div>${finalCategory}</div>`;
+      }, 1500);
+    }
+
+    // Lever pull effect
+    lever.addEventListener("click", () => {
+      lever.style.transform = "rotate(45deg)";
+      setTimeout(() => {
+        lever.style.transform = "rotate(0deg)";
+        spinSound.currentTime = 0;
+        spinSound.play();
+        const slots = document.querySelectorAll(".slot");
+        slots.forEach(slot => spinSlot(slot));
+      }, 300);
+    });
+
+    // Spin button functionality
+    spinButton.addEventListener("click", () => {
+      const slots = document.querySelectorAll(".slot");
+      slots.forEach(slot => spinSlot(slot));
+    });
+    // JavaScript END
+  </script>
 </body>
 </html>
