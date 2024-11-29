@@ -1,9 +1,7 @@
 let categories = ["Food", "Sports", "Music", "Movies", "Travel", "Games", "Books", "Art", "Tech"];
 const spinButton = document.getElementById("spinButton");
 const spinSound = document.getElementById("spinSound");
-const newCategoryInput = document.getElementById("newCategory");
-const addCategoryButton = document.getElementById("addCategoryButton");
-const categoriesList = document.getElementById("categoriesList");
+const lever = document.getElementById("lever");
 
 function getRandomCategories() {
   const randomCategories = [];
@@ -29,30 +27,20 @@ function spinSlot(slot) {
   }, 1500);
 }
 
+// Lever pull effect
+lever.addEventListener("click", () => {
+  lever.style.transform = "rotate(45deg)";
+  setTimeout(() => {
+    lever.style.transform = "rotate(0deg)";
+    spinSound.currentTime = 0;
+    spinSound.play();
+    const slots = document.querySelectorAll(".slot");
+    slots.forEach(slot => spinSlot(slot));
+  }, 300);
+});
+
 // Spin button functionality
 spinButton.addEventListener("click", () => {
-  spinSound.currentTime = 0;
-  spinSound.play();
   const slots = document.querySelectorAll(".slot");
   slots.forEach(slot => spinSlot(slot));
 });
-
-// Add new category functionality
-addCategoryButton.addEventListener("click", () => {
-  const newCategory = newCategoryInput.value.trim();
-  if (newCategory && !categories.includes(newCategory)) {
-    categories.push(newCategory);
-    updateCategoriesList();
-    newCategoryInput.value = "";
-    alert(`${newCategory} has been added!`);
-  } else {
-    alert("Invalid or duplicate category.");
-  }
-});
-
-function updateCategoriesList() {
-  categoriesList.textContent = "Current Categories: " + categories.join(", ");
-}
-
-// Initialize categories list
-updateCategoriesList();
