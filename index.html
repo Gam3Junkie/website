@@ -3,34 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Randomizer Slot Machine</title>
+  <title>Slot Machine Randomizer</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>🎰 Randomizer Slot Machine</h1>
+  <div class="slot-machine-container">
+    <h1>🎰 Slot Machine Randomizer</h1>
+    
     <div class="slot-machine">
-      <div class="slot" id="slot1">
-        <div class="reel"></div>
+      <div class="slots">
+        <div class="slot" id="slot1"><div class="reel"></div></div>
+        <div class="slot" id="slot2"><div class="reel"></div></div>
+        <div class="slot" id="slot3"><div class="reel"></div></div>
       </div>
-      <div class="slot" id="slot2">
-        <div class="reel"></div>
+      <div class="lever-container">
+        <div class="lever" id="lever"></div>
       </div>
     </div>
-    <button id="spinButton">Spin the Wheel</button>
 
-    <div class="customize">
-      <h2>Customize Categories</h2>
-      <input type="text" id="newCategory" placeholder="Add a new category">
-      <button id="addCategoryButton">Add Category</button>
-      <p id="categoriesList">
-        Current Categories: Food, Sports, Music, Movies, Travel, Games, Books, Art, Tech
-      </p>
-    </div>
+    <button id="spinButton">Spin Again</button>
+    <audio id="spinSound" src="spin.mp3"></audio>
   </div>
-
-  <!-- Adding sound effects -->
-  <audio id="spinSound" src="spin.mp3"></audio>
   <script src="script.js"></script>
 </body>
 </html>
